@@ -1,1 +1,1 @@
-#Project for fun to test java performance
+# Project for fun to test java performance
