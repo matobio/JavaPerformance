@@ -1,5 +1,6 @@
-package com.tobio.performance;
+package com.tobio.performance.objects;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class CollectionPerformanceResultObject {
@@ -39,6 +40,14 @@ public class CollectionPerformanceResultObject {
         this.numerOfElements = numerOfElements;
         this.operationType = operationType;
         this.collectionClass = collectionClass;
+    }
+
+
+    public static long getAverageTime(List<CollectionPerformanceResultObject> list) {
+        if (list.isEmpty()) {
+            return 0;
+        }
+        return list.stream().map(CollectionPerformanceResultObject::getOperationDuration).reduce((a, b) -> a + b).get() / list.size();
     }
 
 
@@ -95,9 +104,22 @@ public class CollectionPerformanceResultObject {
     @Override
     public String toString() {
 
-        double elapsedTime = TimeUnit.MILLISECONDS.convert(this.operationDuration, TimeUnit.NANOSECONDS) / 1000.0;
+        double elapsedTime = CollectionPerformanceResultObject.nanosecondsToMiliseconds(this.operationDuration);
 
-        return "Operation: " + this.operationType + ", " + this.collectionClass.getSimpleName() + ":  " + this.operationDuration + "ns, " + elapsedTime + "ms";
+        return "Size: " + this.numerOfElements + " ,Operation: " + this.operationType + ", " + this.collectionClass.getSimpleName() + ":  " + this.operationDuration + "ns, " + elapsedTime + "ms";
     }
 
+
+    public static String printResult(List<CollectionPerformanceResultObject> list) {
+
+        long averageTime = CollectionPerformanceResultObject.getAverageTime(list);
+        double elapsedTime = CollectionPerformanceResultObject.nanosecondsToMiliseconds(averageTime);
+
+        return "Average time: " + averageTime + " ns, " + elapsedTime + " ms";
+    }
+
+
+    protected static double nanosecondsToMiliseconds(long ns) {
+        return TimeUnit.MILLISECONDS.convert(ns, TimeUnit.NANOSECONDS);
+    }
 }

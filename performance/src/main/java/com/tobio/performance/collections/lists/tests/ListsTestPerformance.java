@@ -3,8 +3,8 @@ package com.tobio.performance.collections.lists.tests;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.tobio.performance.CollectionPerformanceResultObject;
 import com.tobio.performance.collections.lists.utils.ListUtils;
+import com.tobio.performance.objects.CollectionPerformanceResultObject;
 
 public class ListsTestPerformance {
 
@@ -18,6 +18,7 @@ public class ListsTestPerformance {
         List<CollectionPerformanceResultObject> listResults = new ArrayList<>();
 
         for (int i = 0; i < numOfTries; i++) {
+            list.clear();
             listResults.add(ListsTestPerformance.operationAdd(numerOfElementsToAdd, list, operationAddType));
         }
 
@@ -65,11 +66,9 @@ public class ListsTestPerformance {
 
         if (operationAddType == ListsTestPerformance.ADD_AT_THE_BEGINNING) {
             result = ListUtils.addElementsAtTheBeginning(numerOfElementsToAdd, list);
-        }
-        else if (operationAddType == ListsTestPerformance.ADD_AT_THE_MIDDLE) {
-            result = ListUtils.addElementsAtInTheMiddle(numerOfElementsToAdd, list);
-        }
-        else if (operationAddType == ListsTestPerformance.ADD_AT_THE_END) {
+        } else if (operationAddType == ListsTestPerformance.ADD_AT_THE_MIDDLE) {
+            result = ListUtils.addElementsAtTheMiddle(numerOfElementsToAdd, list);
+        } else if (operationAddType == ListsTestPerformance.ADD_AT_THE_END) {
             result = ListUtils.addElementsAtTheEnd(numerOfElementsToAdd, list);
         }
 

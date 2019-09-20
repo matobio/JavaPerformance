@@ -2,7 +2,7 @@ package com.tobio.performance.collections.lists.utils;
 
 import java.util.List;
 
-import com.tobio.performance.CollectionPerformanceResultObject;
+import com.tobio.performance.objects.CollectionPerformanceResultObject;
 
 public class ListUtils {
 
@@ -41,7 +41,7 @@ public class ListUtils {
     }
 
 
-    public static CollectionPerformanceResultObject addElementsAtInTheMiddle(int numerOfElements, List<Integer> list) {
+    public static CollectionPerformanceResultObject addElementsAtTheMiddle(int numerOfElements, List<Integer> list) {
 
         long startTime = System.nanoTime();
 

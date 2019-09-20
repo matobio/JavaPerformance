@@ -1,11 +1,16 @@
 package com.tobio.performance;
 
-import com.db4o.ObjectContainer;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
+
 import com.db4o.ObjectSet;
-import com.db4o.query.Predicate;
+import com.tobio.performance.collections.lists.tests.ListsTestPerformance;
 import com.tobio.performance.database.DBManager;
 import com.tobio.performance.database.DBProperties;
+import com.tobio.performance.database.DataBaseUtils;
 import com.tobio.performance.log.Logger;
+import com.tobio.performance.objects.CollectionPerformanceResultObject;
 import com.tobio.performance.prop.AppProperties;
 
 public class App {
@@ -15,29 +20,7 @@ public class App {
         try {
             App.initApplication();
 
-            // List<CollectionPerformanceResultObject> listResults = ListsTestPerformance.runTestOperationAdd(5, 100000, new ArrayList<>(),
-            // ListsTestPerformance.ADD_AT_THE_END);
-            // List<CollectionPerformanceResultObject> listResults2 = ListsTestPerformance.runTestOperationAdd(5, 100000, new Vector<>(),
-            // ListsTestPerformance.ADD_AT_THE_END);
-            //
-            ObjectContainer dbManager = DBManager.getInstance().getDatabaseManager();
-            //
-            // listResults.forEach(el -> dbManager.store(el));
-            // listResults2.forEach(el -> dbManager.store(el));
-
-            ObjectSet<CollectionPerformanceResultObject> result = dbManager.query(new Predicate<CollectionPerformanceResultObject>() {
-
-                private static final long serialVersionUID = 1L;
-
-
-                @Override
-                public boolean match(CollectionPerformanceResultObject obj) {
-                    return true;
-                }
-
-            });
-
-            DBManager.getInstance().printResults(result);
+            App.doSomething();
 
         } catch (Exception ex) {
             Logger.error(ex.getMessage());
@@ -47,7 +30,38 @@ public class App {
     }
 
 
-    protected static void initApplication() {
+    protected static void doSomething() {
+
+        List<?> listResults = ListsTestPerformance.runTestOperationAdd(10, 100000, new Vector<>(), ListsTestPerformance.ADD_AT_THE_END);
+        DataBaseUtils.saveResult(listResults);
+        listResults.clear();
+
+        listResults = ListsTestPerformance.runTestOperationAdd(10, 1000000, new Vector<>(), ListsTestPerformance.ADD_AT_THE_END);
+        DataBaseUtils.saveResult(listResults);
+        listResults.clear();
+
+        listResults = ListsTestPerformance.runTestOperationAdd(10, 10000000, new Vector<>(), ListsTestPerformance.ADD_AT_THE_END);
+        DataBaseUtils.saveResult(listResults);
+        listResults.clear();
+
+        listResults = ListsTestPerformance.runTestOperationAdd(10, 100000, new ArrayList<>(), ListsTestPerformance.ADD_AT_THE_END);
+        DataBaseUtils.saveResult(listResults);
+        listResults.clear();
+
+        listResults = ListsTestPerformance.runTestOperationAdd(10, 1000000, new ArrayList<>(), ListsTestPerformance.ADD_AT_THE_END);
+        DataBaseUtils.saveResult(listResults);
+        listResults.clear();
+
+        listResults = ListsTestPerformance.runTestOperationAdd(10, 10000000, new ArrayList<>(), ListsTestPerformance.ADD_AT_THE_END);
+        DataBaseUtils.saveResult(listResults);
+        listResults.clear();
+
+        ObjectSet<CollectionPerformanceResultObject> result = DataBaseUtils.getCollectionResults();
+        DataBaseUtils.printResults(result);
+    }
+
+
+    public static void initApplication() {
 
         Logger.getInstance().init();
 
